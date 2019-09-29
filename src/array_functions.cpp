@@ -17,7 +17,6 @@
 #include <string>
 #include <vector>
 using namespace std;
-using std::vector;
 
 //============================================================================
 
@@ -67,28 +66,28 @@ const std::string STR_NOT_DONE = "not done";
 
 
 //zero out array that tracks words and their occurrences
-void clearArray(){
+void clearArray() {
 	trackNextSlot = 0;
 }
 
 
 //how many unique words are in array
-int getArraySize(){
+int getArraySize() {
 	return trackNextSlot;
 }
 
 
 //get data at a particular location
-std::string getArrayWordAt(int i){
+std::string getArrayWordAt(int i) {
 	return gArray[i].word;
 
 }
 
-int getArrayWord_NumbOccur_At(int i){
-	if (i > trackNextSlot or i < 0){
+int getArrayWord_NumbOccur_At(int i) {
+	if (i > trackNextSlot or i < 0) {
 		return FAIL_NO_ARRAY_DATA;
 	}
-	else{
+	else {
 		return gArray[i].number_occurences;
 	}
 }
@@ -97,17 +96,16 @@ int getArrayWord_NumbOccur_At(int i){
  * call processLine on each line
  * returns false: myfstream is not open
  *         true: otherwise*/
-bool processFile(std::fstream &myfstream){
+bool processFile(std::fstream &myfstream) {
 	bool fileOpen = myfstream.is_open();
-	if (!fileOpen){
+	if (!fileOpen) {
 		return fileOpen;
 	}
 
-	string line;
-
-	while (!myfstream.eof()){
-		getline(myfstream, line);
-		processLine(line);
+	string checkLine;
+	while (!myfstream.eof()) {
+		getline(myfstream, checkLine);
+		processLine(checkLine);
 	}
 
 	return fileOpen;
@@ -116,38 +114,38 @@ bool processFile(std::fstream &myfstream){
 
 /*take 1 line and extract all the tokens from it
 feed each token to processToken for recording*/
-void processLine(std::string &myString){
+void processLine(std::string &myString) {
 	stringstream ss(myString);
-	string tempToken;
+	string temporaryToken;
 
-	while (getline(ss, tempToken, CHAR_TO_SEARCH_FOR)){
-		processToken(tempToken);
+	while (getline(ss, temporaryToken, CHAR_TO_SEARCH_FOR)) {
+		processToken(temporaryToken);
 	}
 }
 
 
 /*Keep track of how many times each token seen*/
-void processToken(std::string &token){
+void processToken(std::string &token) {
 
-	if (strip_unwanted_chars(token)){
+	if (strip_unwanted_chars(token)) {
 		string upToken = token;
-		toUpper(upToken); //uppercase a string, useful for confirming that To==TO==to==tO
-		for (int i = 0; i < trackNextSlot; i++){
-			string upWord = gArray[i].word;
-			toUpper(upWord);
-			if (upToken == upWord){
+		toUpper(upToken); //uppercase a string
+		for (int i = 0; i < trackNextSlot; i++) {
+			string uppercase = gArray[i].word;
+			toUpper(uppercase);
+			if (upToken == uppercase){
 				gArray[i].number_occurences += 1;
 				return;
 			}
 		}
 
-		entry newEntry;
-		newEntry.word = token;
-		newEntry.number_occurences = 1;
-		gArray[trackNextSlot] = newEntry;
+		entry addEntry;
+		addEntry.word = token;
+		addEntry.number_occurences = 1;
+		gArray[trackNextSlot] = addEntry;
 		trackNextSlot++;
 	}
-	else{ //not a valid token, only unwanted chars, do nothing
+	else {
 		return;
 	}
 }
@@ -156,20 +154,20 @@ void processToken(std::string &token){
 /*if you are debugging the file must be in the project parent directory
   in this case Project2 with the .project and .cProject files*/
 bool openFile(std::fstream& myfile, const std::string& myFileName,
-		std::ios_base::openmode mode ){ //= std::ios_base::in
+		std::ios_base::openmode mode ) {
 
 	myfile.open(myFileName.c_str(), mode);
-	if (myfile.is_open()){
+	if (myfile.is_open()) {
 		return true;
 	}
-	else{
+	else {
 		return false;
 	}
 }
 
 /*iff myfile is open then close it*/
-void closeFile(std::fstream& myfile){
-	if (myfile.is_open()){
+void closeFile(std::fstream& myfile) {
+	if (myfile.is_open()) {
 	myfile.close();
 	}
 
@@ -181,19 +179,19 @@ void closeFile(std::fstream& myfile){
  * 			FAIL_NO_ARRAY_DATA if there are 0 entries in myEntryArray
  * 			SUCCESS if all data is written and outputfilename closes OK
  * */
-int writeArraytoFile(const std::string &outputfilename){
+int writeArraytoFile(const std::string &outputfilename) {
 	fstream outputFile;
 
 	bool attemptOpen = openFile(outputFile, outputfilename, fstream::out);
-	if (!attemptOpen){
+	if (!attemptOpen) {
 		return FAIL_FILE_DID_NOT_OPEN;
 	}
 
-	if (getArraySize() == 0){
+	if (getArraySize() == 0) {
 		return FAIL_NO_ARRAY_DATA;
 	}
 
-	for (int i = 0; i < trackNextSlot; i++){
+	for (int i = 0; i < trackNextSlot; i++) {
 		outputFile << gArray[i].word << " " << gArray[i].number_occurences << endl;
 	}
 
@@ -207,23 +205,23 @@ int writeArraytoFile(const std::string &outputfilename){
  * You must provide a solution that handles alphabetic sorting (A-Z)
  * The presence of the enum implies a switch statement based on its value
  */
-void sortArray(constants::sortOrder so){ //taking the sort order enums
+void sortArray(constants::sortOrder so) {
 	entry trackEntry;
 
-	switch(so){
+	switch(so) {
 		case NONE:{break;}
 
-		case ASCENDING:{
+		case ASCENDING: {
 			bool swap = true;
-			while(swap){
+			while(swap) {
 				swap = false;
 				for (int i = 0; i < trackNextSlot - 1; i++){
 					string mainWord = gArray[i].word;
-					string compWord = gArray[i+1].word;
+					string compareWord = gArray[i+1].word;
 
 					toUpper(mainWord); //uppercase a string
-					toUpper(compWord); //uppercase a string
-					if(mainWord > compWord){
+					toUpper(compareWord); //uppercase a string
+					if(mainWord > compareWord){
 						swap = true;
 						entry placeHolder = gArray[i];
 						gArray[i] = gArray[i+1];
@@ -233,33 +231,13 @@ void sortArray(constants::sortOrder so){ //taking the sort order enums
 			}
 		break;
 		}
-	case DESCENDING:{
+	case NUMBER_OCCURRENCES: {
 		bool swap = true;
-					while(swap){
+					while(swap) {
 						swap = false;
-						for (int i = 0; i < trackNextSlot - 1; i++){
-							string mainWord = gArray[i].word;
-							string compWord = gArray[i+1].word;
+						for (int i = 0; i < trackNextSlot - 1; i++) {
 
-							toUpper(mainWord);
-							toUpper(compWord);
-							if(mainWord < compWord){
-								swap = true;
-								entry placeHolder = gArray[i];
-								gArray[i] = gArray[i+1];
-								gArray[i+1] = placeHolder;
-							}
-						}
-					}
-		break;
-	}
-	case NUMBER_OCCURRENCES:{
-		bool swap = true;
-					while(swap){
-						swap = false;
-						for (int i = 0; i < trackNextSlot - 1; i++){
-
-							if(gArray[i].number_occurences > gArray[i+1].number_occurences){
+							if(gArray[i].number_occurences > gArray[i+1].number_occurences) {
 								swap = true;
 								entry placeHolder = gArray[i];
 								gArray[i] = gArray[i+1];
