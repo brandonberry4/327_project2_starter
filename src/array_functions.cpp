@@ -4,26 +4,6 @@
  *  Created on: Sept 16, 2019
  *      Author: Brandon Berry
  */
-
-//============================================================================
-//	TODO add necessary includes here
-#include "utilities.h"
-#include "array_functions.h"
-#include "constants.h"
-#include <array>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
-#include <vector>
-using namespace std;
-
-//============================================================================
-
-//============================================================================
-//	stuff you will need
-//============================================================================
-
 //============================================================================
 //	TODO add necessary includes here
 //============================================================================
