@@ -4,6 +4,7 @@
  *  Created on: Sept 16, 2019
  *      Author: Brandon Berry
  */
+
 //============================================================================
 //	TODO add necessary includes here
 //============================================================================
@@ -211,6 +212,26 @@ void sortArray(constants::sortOrder so) {
 			}
 		break;
 		}
+	case DESCENDING: {
+		bool swap = true;
+					while(swap) {
+						swap = false;
+						for (int i = 0; i < trackNextSlot - 1; i++) {
+							string mainWord = gArray[i].word;
+							string compareWord = gArray[i+1].word;
+
+							toUpper(mainWord);
+							toUpper(compareWord);
+							if(mainWord < compareWord) {
+								swap = true;
+								entry placeHolder = gArray[i];
+								gArray[i] = gArray[i+1];
+								gArray[i+1] = placeHolder;
+							}
+						}
+					}
+		break;
+	}
 	case NUMBER_OCCURRENCES: {
 		bool swap = true;
 					while(swap) {
